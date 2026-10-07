@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+.env
+*.js.map
+.DS_Store
+Thumbs.db
+*.tsbuildinfo
+*.log
+npm-debug.log*
+.vscode/settings.json
+.jest-cache/
+*.tmp
+*.temp

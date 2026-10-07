@@ -1,0 +1,11 @@
+{
+  // VS Code will prompt you to install these when you open the project.
+  // Practice: open the Extensions panel (Cmd+Shift+X) and install them.
+  "recommendations": [
+    "esbenp.prettier-vscode",         // Prettier formatter
+    "dbaeumer.vscode-eslint",          // ESLint inline errors
+    "orta.vscode-jest",                // Jest Test Explorer (run/debug tests from gutter)
+    "ms-vscode.vscode-typescript-next", // Latest TypeScript language features
+    "streetsidesoftware.code-spell-checker" // Catches typos in comments/strings
+  ]
+}
