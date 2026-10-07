@@ -1,5 +1,4 @@
 // utils/math.ts
-// Practice: Hover over function signatures to see inferred types (no need to open the file)
 
 /**
  * Rounds a number to a given number of decimal places.

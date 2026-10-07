@@ -1,5 +1,4 @@
 // utils/validator.ts
-// Practice: Cmd+Shift+F to search for "ValidationError" across all files
 
 export class ValidationError extends Error {
   constructor(
