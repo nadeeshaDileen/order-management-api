@@ -106,6 +106,31 @@ export function updateOrderStatus(id: string, newStatus: OrderStatus): Order {
 }
 
 /**
+ * Cancels an order and restores stock to each product.
+ * Only orders that are pending or confirmed can be cancelled.
+ */
+export function cancelOrder(orderId: string): Order {
+  const order = orderStore.get(orderId);
+  if (!order) throw new Error(`Order not found: ${orderId}`);
+
+  if (order.status !== 'pending' && order.status !== 'confirmed') {
+    throw new Error(`Cannot cancel an order with status "${order.status}"`);
+  }
+
+  // Restore stock for each item
+  order.items.forEach((item) => {
+    const product = findProduct(item.product.id);
+    if (product) {
+        updateProduct(product.id, { stock: product.stock + item.quantity });
+    }
+  });
+
+  const updated: Order = { ...order, status: 'cancelled', updatedAt: new Date() };
+  orderStore.set(orderId, updated);
+  return updated;
+}
+
+/**
  * Resets order store — used in tests.
  */
 export function resetOrderStore(): void {

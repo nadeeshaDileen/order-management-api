@@ -1,7 +1,7 @@
 // tests/services/order-service.test.ts
 
 
-import { createOrder, findOrder, getOrdersByCustomer, updateOrderStatus, resetOrderStore } from '../../src/services/order-service';
+import { createOrder, findOrder, getOrdersByCustomer, updateOrderStatus, resetOrderStore, cancelOrder } from '../../src/services/order-service';
 import { createProduct, resetStore } from '../../src/services/product-service';
 
 // Reset both stores before each test
@@ -154,3 +154,31 @@ describe('updateOrderStatus()', () => {
     expect(() => updateOrderStatus('ghost', 'confirmed')).toThrow('Order not found');
   });
 });
+
+describe('cancelOrder()', () => {
+  it('sets status to cancelled', () => {
+    const p = makeProduct(10);
+    const order = createOrder({ customerId: 'c', items: [{ productId: p.id, quantity: 2 }] });
+    const cancelled = cancelOrder(order.id);
+    expect(cancelled.status).toBe('cancelled');
+  });
+
+  it('restores stock to the product', () => {
+    const p = makeProduct(10);
+    const order = createOrder({ customerId: 'c', items: [{ productId: p.id, quantity: 3 }] });
+    cancelOrder(order.id);
+    const { findProduct } = require('../../src/services/product-service');
+    expect(findProduct(p.id)?.stock).toBe(10); // 10 - 3 + 3
+  });
+
+  it('throws when cancelling a delivered order', () => {
+    const p = makeProduct(10);
+    const order = createOrder({ customerId: 'c', items: [{ productId: p.id, quantity: 1 }] });
+    updateOrderStatus(order.id, 'confirmed');
+    updateOrderStatus(order.id, 'shipped');
+    updateOrderStatus(order.id, 'delivered');
+    expect(() => cancelOrder(order.id)).toThrow('Cannot cancel');
+  });
+});
+
+

@@ -51,7 +51,7 @@ export function findProduct(id: string): Product | undefined {
  * Updates a product's mutable fields.
  * Throws if the product doesn't exist or any new value is invalid.
  */
-export function updateProduct(id: string, input: UpdateProductInput): Product {
+  export function updateProduct(id: string, input: UpdateProductInput): Product {
   const existing = store.get(id);
   if (!existing) {
     throw new Error(`Product not found: ${id}`);
